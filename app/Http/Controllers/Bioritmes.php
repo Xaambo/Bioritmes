@@ -40,12 +40,15 @@ class Bioritmes extends Controller
     {
         $nom = $request->input('name');
         $dataNeixement = $request->input('birthdate');
-        $dataNeixement = strtotime($dataNeixement);
-        $sysdate = new DateTime();
-        
+        $dataNeixement = new DateTime($dataNeixement);
+        $sysdate = new DateTime(date('d/m/Y'));
 
         $diff = $dataNeixement->diff($sysdate);
         $dies = $diff->days;
+
+        if ($dataNeixement > $sysdate) {
+            return view('index',['nom'=>'Index per tonto']);
+        }
 
         return view('resum',['dies'=>$dies]);
     }
