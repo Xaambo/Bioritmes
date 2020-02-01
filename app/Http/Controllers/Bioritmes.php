@@ -44,7 +44,6 @@ class Bioritmes extends Controller
         $sysdate = new DateTime(date('d/m/Y'));
 
         $diff = $dataNeixement->diff($sysdate);
-        
         $dies = $diff->days;
 
         if ($dataNeixement > $sysdate) {
