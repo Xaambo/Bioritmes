@@ -42,6 +42,7 @@ class Bioritmes extends Controller
         $dataNeixement = $request->input('birthdate');
         $dataNeixement = strtotime($dataNeixement);
         $sysdate = new DateTime();
+        
 
         $diff = $dataNeixement->diff($sysdate);
         $dies = $diff->days;
