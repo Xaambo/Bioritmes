@@ -39,18 +39,22 @@ class Bioritmes extends Controller
     public function store(Request $request)
     {
         $nom = $request->input('name');
-        $dataNeixement = $request->input('birthdate');
-        $dataNeixement = new DateTime($dataNeixement);
+        $strDataNeixement = $request->input('birthdate');
+        $dataNeixement = new DateTime($strDataNeixement);
         $sysdate = new DateTime(date('d/m/Y'));
 
         $diff = $dataNeixement->diff($sysdate);
         $dies = $diff->days;
 
+        $percentatgeFisic = (($dies % 23) / 23) * 100;
+        $percentatgeEmocional = (($dies % 28) / 28) * 100;
+        $percentatgeIntelectual = (($dies % 33) / 33) * 100;
+
         if ($dataNeixement > $sysdate) {
             return view('index',['nom'=>'Index per tonto']);
         }
 
-        return view('resum',['dies'=>$dies]);
+        return view('resum',['nomUsuari'=>$nom, 'dataNeixement'=>$strDataNeixement, 'dies'=>$dies, 'progresFis'=>$percentatgeFisic, 'progresEmo'=>$percentatgeEmocional, 'progresInt'=>$percentatgeIntelectual]);
     }
 
     /**
