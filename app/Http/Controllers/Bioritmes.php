@@ -39,22 +39,25 @@ class Bioritmes extends Controller
     public function store(Request $request)
     {
         $nom = $request->input('name');
-        $strDataNeixement = $request->input('birthdate');
-        $dataNeixement = new DateTime($strDataNeixement);
-        $sysdate = new DateTime(date('d/m/Y'));
+        
+        $dataNeixement = $request->input('birthdate');
+        $dataNeixement = new DateTime($dataNeixement);
+
+        $sysdate = getdate();
+        $sysdate = new DateTime("$sysdate[year]/$sysdate[mon]/$sysdate[mday]");
 
         $diff = $dataNeixement->diff($sysdate);
         $dies = $diff->days;
 
-        $percentatgeFisic = (($dies % 23) / 23) * 100;
-        $percentatgeEmocional = (($dies % 28) / 28) * 100;
-        $percentatgeIntelectual = (($dies % 33) / 33) * 100;
+        $percentatgeFisic = (sin(2*pi()*$dies/23) + 1) * 50;
+        $percentatgeEmocional = (sin(2*pi()*$dies/28) + 1) * 50;
+        $percentatgeIntelectual = (sin(2*pi()*$dies/33) + 1) * 50;
 
         if ($dataNeixement > $sysdate) {
             return view('index',['nom'=>'Index per tonto']);
         }
 
-        return view('resum',['nomUsuari'=>$nom, 'dataNeixement'=>$strDataNeixement, 'dies'=>$dies, 'progresFis'=>$percentatgeFisic, 'progresEmo'=>$percentatgeEmocional, 'progresInt'=>$percentatgeIntelectual]);
+        return view('resum',['nomUsuari'=>$nom, 'dataNeixement'=>$dataNeixement->format('d/m/Y'), 'dies'=>$dies, 'progresFis'=>$percentatgeFisic, 'progresEmo'=>$percentatgeEmocional, 'progresInt'=>$percentatgeIntelectual]);
     }
 
     /**
